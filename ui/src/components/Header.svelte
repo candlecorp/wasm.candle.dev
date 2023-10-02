@@ -9,6 +9,7 @@
 		DropdownItem,
 		DropdownDivider
 	} from 'flowbite-svelte';
+	import { GithubSolid } from 'flowbite-svelte-icons';
 	import { ChevronDownOutline } from 'flowbite-svelte-icons';
 	import { page } from '$app/stores';
 	$: activeUrl = $page.url.pathname;
@@ -16,25 +17,32 @@
 
 <Navbar>
 	<NavBrand href="/">
-		<img src="/images/flowbite-svelte-icon-logo.svg" class="mr-3 h-6 sm:h-9" alt="Flowbite Logo" />
-		<span class="self-center whitespace-nowrap text-xl font-semibold dark:text-white">Flowbite</span
-		>
+		<img src="wick_logo.png" class="mr-3 h-6 sm:h-9" alt="Wick Logo" />
 	</NavBrand>
-	<NavHamburger />
+	<NavHamburger menuClass="text-right right-0" />
+	<Dropdown class="w-44 z-20" {activeUrl}>
+		<DropdownItem class="flex justify-center items-end" href="https://github.com/candlecorp/wick"
+			><GithubSolid size="lg" /></DropdownItem
+		>
+		<DropdownItem class="flex justify-center items-center" href="/">Home</DropdownItem>
+		<DropdownItem class="flex justify-center items-center" href="/aichat">AI Chatbot</DropdownItem>
+		<DropdownItem class="flex justify-center items-center" href="/validator"
+			>Input Validator</DropdownItem
+		>
+		<DropdownItem class="flex justify-center items-center" href="/">Something Elses</DropdownItem>
+	</Dropdown>
+
 	<NavUl {activeUrl}>
+		<NavLi href="https://github.com/candlecorp/wick"><GithubSolid size="lg" /></NavLi>
+
 		<NavLi href="/">Home</NavLi>
 		<NavLi class="cursor-pointer">
-			Dropdown<ChevronDownOutline class="w-3 h-3 ml-2 text-primary-800 dark:text-white inline" />
+			Examples<ChevronDownOutline class="w-3 h-3 ml-2 text-primary-800 dark:text-white inline" />
 		</NavLi>
-		<Dropdown class="w-44 z-20">
-			<DropdownItem href="/">Dashboard</DropdownItem>
-			<DropdownItem href="/docs/components/navbar">Settings</DropdownItem>
-			<DropdownItem href="/">Earnings</DropdownItem>
-			<DropdownDivider />
-			<DropdownItem href="/">Sign out</DropdownItem>
+		<Dropdown class="w-44 z-20" {activeUrl}>
+			<DropdownItem href="/aichat">AI Chatbot</DropdownItem>
+			<DropdownItem href="/validator">Input Validator</DropdownItem>
+			<DropdownItem href="/">Something Elses</DropdownItem>
 		</Dropdown>
-		<NavLi href="/settings">Setting</NavLi>
-		<NavLi href="/pricing">Pricing</NavLi>
-		<NavLi href="/contact">Contact</NavLi>
 	</NavUl>
 </Navbar>
