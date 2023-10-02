@@ -1,0 +1,7 @@
+kind: wick/app@v1
+name: app.wick
+metadata:
+  version: 0.0.1
+  description: New wick application
+  licenses:
+  - Apache-2.0
