@@ -25,11 +25,10 @@
 			><GithubSolid size="lg" /></DropdownItem
 		>
 		<DropdownItem class="flex justify-center items-center" href="/">Home</DropdownItem>
-		<DropdownItem class="flex justify-center items-center" href="/aichat">AI Chatbot</DropdownItem>
-		<DropdownItem class="flex justify-center items-center" href="/validator"
-			>Input Validator</DropdownItem
+		<DropdownItem class="flex justify-center items-center" href="/llama2">Llama2</DropdownItem>
+		<DropdownItem class="flex justify-center items-center" href="/redact"
+			>Text Redaction</DropdownItem
 		>
-		<DropdownItem class="flex justify-center items-center" href="/">Something Elses</DropdownItem>
 	</Dropdown>
 
 	<NavUl {activeUrl}>
@@ -40,9 +39,8 @@
 			Examples<ChevronDownOutline class="w-3 h-3 ml-2 text-primary-800 dark:text-white inline" />
 		</NavLi>
 		<Dropdown class="w-44 z-20" {activeUrl}>
-			<DropdownItem href="/aichat">AI Chatbot</DropdownItem>
-			<DropdownItem href="/validator">Input Validator</DropdownItem>
-			<DropdownItem href="/">Something Elses</DropdownItem>
+			<DropdownItem href="/llama2">AI Chatbot</DropdownItem>
+			<DropdownItem href="/redact">Text Redaction</DropdownItem>
 		</Dropdown>
 	</NavUl>
 </Navbar>
