@@ -5,44 +5,10 @@
 
 	import { decode, encode } from '@msgpack/msgpack';
 	import { from } from 'rxjs';
-	import { Packet, Wick, wasi } from 'wick-js';
+	import { Packet } from '@candlecorp/wick';
+	import { instantiateComponentWorker } from '$lib/workers';
 
 	export let bundleName: string;
-
-	async function instantiateComponent() {
-		const wasiOpts: wasi.WasiOptions = {
-			version: wasi.WasiVersions.SnapshotPreview1,
-			args: [],
-			env: { RUST_LOG: 'trace' },
-			preopens: {
-				'/': 'opfs:/'
-			},
-			stdin: 0,
-			stdout: 1,
-			stderr: 2
-		};
-
-		let wasm = await (await fetch('/infer.signed.wasm')).arrayBuffer();
-
-		try {
-			const workerUrl = new URL('../lib/component-worker.ts', import.meta.url);
-			const component = await Wick.Component.WasmRs.FromBytes(wasm, { wasi: wasiOpts, workerUrl });
-
-			const config = {
-				config: {
-					model_dir: '/',
-					model: `${bundleName}.bin`,
-					tokenizer: 'tokenizer.json'
-				}
-			};
-			console.log({ config });
-
-			const instance = await component.instantiate(config);
-			return instance;
-		} catch (e) {
-			console.error(`Error instantiating component: ${e}`);
-		}
-	}
 
 	let message = 'Once upon a time, in a land far away...';
 	let chatHistory: Writable<Array<{ sender: string; message: string }>> = writable([]);
@@ -70,11 +36,11 @@
 	}
 
 	async function getAIResponse(input: string, aiMessageIndex: number): Promise<void> {
-		const inst = await instantiateComponent();
-		if (!inst) {
-			console.log('no instance running');
-			return;
-		}
+		const inst = await instantiateComponentWorker('/infer.signed.wasm', {
+			model_dir: '/',
+			model: `${bundleName}.bin`,
+			tokenizer: 'tokenizer.json'
+		});
 
 		const stream = from([new Packet('prompt', encode(input)), Packet.Done('prompt')]);
 		const result = await inst.invoke('generate', stream, { max_length: 512 });

@@ -24,7 +24,7 @@ export type WorkerMessage = ProgressMessage | CompleteMessage | ErrorMessage;
 
 export interface ProgressMessage {
 	type: WorkerMessageType.Progress;
-	percentage: number;
+	percentage: number | undefined;
 	path: string;
 }
 
