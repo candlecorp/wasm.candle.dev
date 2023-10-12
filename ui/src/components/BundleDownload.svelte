@@ -36,9 +36,7 @@
 
 	async function startDownload() {
 		downloading = true;
-		console.log({ selectedModel: selectedBundle });
 		const bundle = bundles[selectedBundle];
-		console.log({ files: bundle });
 		const path = selectedBundle;
 		downloadPercentage.set(Object.fromEntries(bundle.files.map((entry) => [entry.path, 0])));
 		for (let i = 0; i < bundle.files.length; i++) {
@@ -78,15 +76,14 @@
 
 	<div class="w-full text-center">
 		{#each Object.entries($downloadPercentage) as [path, pct]}
-			<span class="flex content-center">
-				<span class="w-1/3 font-mono" style="font-size:1em;">{path}</span>
-				<span class="w-2/3 content-center" style=";">
-					{#if pct === 100}
-						<Progressbar class="mt-2 mr-5" progress={pct} color="green" />
-					{:else}
-						<Progressbar class="mt-2 mr-5" progress={pct} />
-					{/if}
-				</span>
+			<span class="pr-5 pl-5 mt-0">
+				{#if pct === 100}
+					<Progressbar progress={pct} color="green" labelOutside={path} />
+				{:else if pct === undefined}
+					<Progressbar progress={5} color="yellow" labelOutside={path} />
+				{:else}
+					<Progressbar progress={pct} labelOutside={path} />
+				{/if}
 			</span>
 		{/each}
 	</div>

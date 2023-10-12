@@ -12,7 +12,8 @@
 		"format": "prettier --plugin-search-dir . --write ."
 	},
 	"devDependencies": {
-		"@bjorn3/browser_wasi_shim": "file:../../browser_wasi_shim",
+		"@candlecorp/wick": "^0.2.1",
+		"@msgpack/msgpack": "^3.0.0-beta2",
 		"@sveltejs/adapter-auto": "^2.0.0",
 		"@sveltejs/adapter-static": "^2.0.3",
 		"@sveltejs/kit": "^1.20.4",
@@ -31,6 +32,7 @@
 		"postcss-load-config": "^4.0.1",
 		"prettier": "^2.8.0",
 		"prettier-plugin-svelte": "^2.10.1",
+		"rxjs": "^7.8.1",
 		"svelte": "^4.0.5",
 		"svelte-check": "^3.4.3",
 		"tailwindcss": "^3.3.2",
@@ -38,13 +40,8 @@
 		"typescript": "^5.2.2",
 		"vite": "^4.4.2",
 		"vite-plugin-mkcert": "^1.16.0",
-		"vite-plugin-node-polyfills": "^0.15.0"
+		"vite-plugin-node-polyfills": "^0.15.0",
+		"wasmrs-js": "^0.2.4"
 	},
-	"type": "module",
-	"dependencies": {
-		"@msgpack/msgpack": "^3.0.0-beta2",
-		"rxjs": "^7.8.1",
-		"wasmrs-js": "file:../../wasmrs-js",
-		"wick-js": "file:../../wick-js"
-	}
+	"type": "module"
 }

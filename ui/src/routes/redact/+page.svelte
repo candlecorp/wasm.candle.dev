@@ -2,36 +2,8 @@
 	import { decode, encode } from '@msgpack/msgpack';
 	import { Button, Textarea } from 'flowbite-svelte';
 	import { from } from 'rxjs';
-	import { Packet, Wick, wasi } from 'wick-js';
-
-	async function instantiateComponent() {
-		const wasiOpts: wasi.WasiOptions = {
-			version: wasi.WasiVersions.SnapshotPreview1,
-			args: [],
-			stdin: 0,
-			stdout: 1,
-			stderr: 2
-		};
-
-		let wasm = await (await fetch('/redact.signed.wasm')).arrayBuffer();
-
-		try {
-			const workerUrl = new URL('../../lib/component-worker.ts', import.meta.url);
-			const component = await Wick.Component.WasmRs.FromBytes(wasm, { wasi: wasiOpts, workerUrl });
-
-			const ctx = {
-				config: {}
-			};
-
-			const instance = await component.instantiate(ctx);
-			return instance;
-		} catch (e) {
-			console.error(`Error instantiating component: ${e}`);
-		}
-	}
-
-	let input = '';
-	let validated = '';
+	import { Packet } from '@candlecorp/wick';
+	import { instantiateComponentWorker } from '$lib/workers';
 
 	let inputObj = {
 		name: 'John',
@@ -43,12 +15,11 @@
 
 	let sampleInput = JSON.stringify(inputObj, null, 4);
 
+	let input = sampleInput;
+	let validated = '';
+
 	async function validateInput(e: MouseEvent): Promise<void> {
-		const inst = await instantiateComponent();
-		if (!inst) {
-			console.log('no instance running');
-			return;
-		}
+		const inst = await instantiateComponentWorker('/redact.signed.wasm', {});
 
 		const stream = from([new Packet('input', encode(sampleInput)), Packet.Done('input')]);
 		const result = await inst.invoke('regex', stream, {
