@@ -26,6 +26,9 @@
 		>
 		<DropdownItem class="flex justify-center items-center" href="/">Home</DropdownItem>
 		<DropdownItem class="flex justify-center items-center" href="/llama2">Llama2</DropdownItem>
+		<DropdownItem class="flex justify-center items-center" href="/yolo"
+			>Object detection</DropdownItem
+		>
 		<DropdownItem class="flex justify-center items-center" href="/redact"
 			>Text Redaction</DropdownItem
 		>
@@ -39,7 +42,8 @@
 			Examples<ChevronDownOutline class="w-3 h-3 ml-2 text-primary-800 dark:text-white inline" />
 		</NavLi>
 		<Dropdown class="w-44 z-20" {activeUrl}>
-			<DropdownItem href="/llama2">AI Chatbot</DropdownItem>
+			<DropdownItem href="/llama2">Llama Text Generation</DropdownItem>
+			<DropdownItem href="/yolo">Object detection</DropdownItem>
 			<DropdownItem href="/redact">Text Redaction</DropdownItem>
 		</Dropdown>
 	</NavUl>
