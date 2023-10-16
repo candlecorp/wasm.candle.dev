@@ -1,6 +1,7 @@
 <script context="module" lang="ts">
 	export interface BundleEntry {
 		label: string;
+		ready?: boolean;
 		files: FileEntry[];
 	}
 </script>
@@ -52,6 +53,10 @@
 							break;
 						}
 					}
+					if (allDone) {
+						bundle.ready = true;
+						downloading = false;
+					}
 					return v;
 				});
 			});
@@ -65,26 +70,33 @@
 
 <!-- Main Content Container -->
 <div class="flex flex-col justify-center">
-	<div class="w-full items-center">
-		<form on:submit|preventDefault={startDownload} class="text-center">
-			<Select items={selectOptions} bind:value={selectedBundle} on:change={resetState} />
-			{#if !downloading}
-				<Button pill class="mt-2" type="submit">Download Files</Button>
-			{/if}
-		</form>
+	<div class="w-full items-center text-center">
+		<Select items={selectOptions} bind:value={selectedBundle} on:change={resetState} />
+		{#if !downloading}
+			<Button
+				pill
+				class="mt-2"
+				on:click={startDownload}
+				type="submit"
+				disabled={(bundles[selectedBundle] || {}).ready}>Download Files</Button
+			>
+			<slot />
+		{/if}
 	</div>
 
 	<div class="w-full text-center">
-		{#each Object.entries($downloadPercentage) as [path, pct]}
-			<span class="pr-5 pl-5 mt-0">
-				{#if pct === 100}
-					<Progressbar progress={pct} color="green" labelOutside={path} />
-				{:else if pct === undefined}
-					<Progressbar progress={5} color="yellow" labelOutside={path} />
-				{:else}
-					<Progressbar progress={pct} labelOutside={path} />
-				{/if}
-			</span>
-		{/each}
+		{#if downloading}
+			{#each Object.entries($downloadPercentage) as [path, pct]}
+				<span class="pr-5 pl-5 mt-0">
+					{#if pct === 100}
+						<Progressbar progress={pct} color="green" labelOutside={path} />
+					{:else if pct === undefined}
+						<Progressbar progress={5} color="yellow" labelOutside={path} />
+					{:else}
+						<Progressbar progress={pct} labelOutside={path} />
+					{/if}
+				</span>
+			{/each}
+		{/if}
 	</div>
 </div>

@@ -2,8 +2,9 @@
 	import { decode, encode } from '@msgpack/msgpack';
 	import { Button, Textarea } from 'flowbite-svelte';
 	import { from } from 'rxjs';
-	import { Packet } from '@candlecorp/wick';
-	import { instantiateComponentWorker } from '$lib/workers';
+	import { Packet, WasmRsComponent } from '@candlecorp/wick';
+	import { getComponentInstance, instantiateComponentWorker } from '$lib/workers';
+	import { onDestroy } from 'svelte';
 
 	let inputObj = {
 		name: 'John',
@@ -18,11 +19,17 @@
 	let input = sampleInput;
 	let validated = '';
 
+	let component: WasmRsComponent | undefined;
+
 	async function validateInput(e: MouseEvent): Promise<void> {
-		const inst = await instantiateComponentWorker('/redact.signed.wasm', {});
+		if (!component) {
+			const c = await instantiateComponentWorker('/components/redact.signed.wasm');
+			component = c;
+		}
+		const instance = await component.instantiate({ config: {} });
 
 		const stream = from([new Packet('input', encode(sampleInput)), Packet.Done('input')]);
-		const result = await inst.invoke('regex', stream, {
+		const result = await instance.invoke('regex', stream, {
 			append_hash: true,
 			patterns: [
 				'\\b\\d\\d\\d-\\d\\d-\\d\\d\\d\\d\\b',
@@ -48,6 +55,11 @@
 			}
 		});
 	}
+	onDestroy(() => {
+		if (component) {
+			component.terminate();
+		}
+	});
 </script>
 
 <div class="w-full flex flex-col justify-center items-center">

@@ -1,4 +1,4 @@
-import { WasmRsComponentInstance, Wick } from '@candlecorp/wick';
+import { WasmRsComponent, WasmRsComponentInstance, Wick } from '@candlecorp/wick';
 import { wasi } from 'wasmrs-js';
 import ComponentWorker from './component-worker.js?worker&url';
 
@@ -26,10 +26,12 @@ export function loadWorker(id: string, kind: WorkerKind) {
 	return worker;
 }
 
-export async function instantiateComponentWorker(
-	wasmUrl: string,
-	componentConfig: unknown
-): Promise<WasmRsComponentInstance> {
+interface ComponentWorker {
+	component: WasmRsComponent;
+	instance: WasmRsComponentInstance;
+}
+
+export async function instantiateComponentWorker(wasmUrl: string): Promise<WasmRsComponent> {
 	const wasiOpts: wasi.WasiOptions = {
 		version: wasi.WasiVersions.SnapshotPreview1,
 		args: [],
@@ -42,7 +44,6 @@ export async function instantiateComponentWorker(
 		stderr: 2
 	};
 
-	// const wasm = await (await fetch(wasmUrl)).arrayBuffer();
 	const wasm = await fetch(wasmUrl);
 
 	try {
@@ -54,13 +55,25 @@ export async function instantiateComponentWorker(
 		}
 
 		const component = await Wick.Component.WasmRs.FromResponse(wasm, { wasi: wasiOpts, workerUrl });
-		// const component = await Wick.Component.WasmRs.FromBytes(wasm, { wasi: wasiOpts, workerUrl });
+		return component;
+	} catch (e) {
+		console.error(`Error instantiating component`, e);
+		throw e;
+	}
+}
+
+export async function getComponentInstance(
+	wasmUrl: string,
+	componentConfig: unknown
+): Promise<ComponentWorker> {
+	try {
+		const component = await instantiateComponentWorker(wasmUrl);
 		const config = {
 			config: componentConfig
 		};
 
 		const instance = await component.instantiate(config);
-		return instance;
+		return { component, instance };
 	} catch (e) {
 		console.error(`Error instantiating component`, e);
 		throw e;
