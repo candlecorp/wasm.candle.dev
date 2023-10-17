@@ -1,5 +1,5 @@
 kind: wick/app@v1
-name: build-once-run-anywhere
+name: build-once
 metadata:
   version: 0.1.0
   description: showcasing wick server and client side capabilities.
