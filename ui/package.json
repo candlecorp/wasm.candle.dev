@@ -12,7 +12,7 @@
 		"format": "prettier --plugin-search-dir . --write ."
 	},
 	"devDependencies": {
-		"@candlecorp/wick": "^0.2.1",
+		"@candlecorp/wick": "^0.2.2",
 		"@msgpack/msgpack": "^3.0.0-beta2",
 		"@sveltejs/adapter-auto": "^2.0.0",
 		"@sveltejs/adapter-static": "^2.0.3",

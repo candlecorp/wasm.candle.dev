@@ -3,12 +3,16 @@
 	import { Button, Textarea } from 'flowbite-svelte';
 	import { from } from 'rxjs';
 	import { Packet, WasmRsComponent } from '@candlecorp/wick';
-	import { getComponentInstance, instantiateComponentWorker } from '$lib/workers';
+	import { instantiateComponentWorker } from '$lib/workers';
 	import { onDestroy } from 'svelte';
+	import Section from '../../components/Section.svelte';
+	import { description, header } from '../../styles';
+	import Terminal from '../../components/Terminal.svelte';
+	import { cli } from './wick-output.js';
 
 	let inputObj = {
 		name: 'John',
-		age: 'thirty',
+		age: 30,
 		email: 'john@somewhere.com',
 		ssn: '123-45-6789',
 		ccn: '1234-5678-9012-3456'
@@ -30,7 +34,6 @@
 
 		const stream = from([new Packet('input', encode(sampleInput)), Packet.Done('input')]);
 		const result = await instance.invoke('regex', stream, {
-			append_hash: true,
 			patterns: [
 				'\\b\\d\\d\\d-\\d\\d-\\d\\d\\d\\d\\b',
 				'\\b\\d\\d\\d\\d-\\d\\d\\d\\d-\\d\\d\\d\\d-\\d\\d\\d\\d\\b',
@@ -62,30 +65,40 @@
 	});
 </script>
 
-<div class="w-full flex flex-col justify-center items-center">
-	<div class="w-3/5">
-		<div>
-			<Textarea
-				id="input"
-				class="mx-4 resize-none"
-				rows="1"
-				placeholder={sampleInput}
-				bind:value={input}
-				style="height: 12em; max-height: 20em; overflow-y: auto;"
-			/>
-		</div>
+<h1 class={header}>Text Redaction component</h1>
+<Section>
+	<p class={description}>
+		This demo uses the <strong>common/redact</strong> Wick component to redact text matching an expression.
+	</p>
+	<p class={description}>
+		It uses the
+		<a href="https://github.com/candlecorp/wick">Wick framework</a> to compile a regular expression engine
+		into WebAssembly. It demonstrates a way to have 100% consistent processing across environments using
+		the same configuration.
+	</p>
+</Section>
+<Section header="Online demo">
+	<div class="flex flex-col">
+		<Textarea id="input" class="h-48 font-mono" placeholder={sampleInput} bind:value={input} />
+		<Button on:click={validateInput} class="m-2">Redact</Button>
+		<Textarea
+			id="input"
+			class=" h-48 font-mono"
+			placeholder="After Validation"
+			bind:value={validated}
+		/>
 	</div>
-	<div class="flex justify-center mt-2"><Button on:click={validateInput}>Validate</Button></div>
-	<div class="w-3/5 mt-2">
-		<div>
-			<Textarea
-				id="input"
-				class="mx-4 resize-none"
-				rows="1"
-				placeholder="After Validation"
-				bind:value={validated}
-				style="height: 12em; max-height: 20em; overflow-y: auto;"
-			/>
-		</div>
-	</div>
-</div>
+</Section>
+<Section header="On the command line">
+	<p class="mt-2">Use the following command to run this in your terminal:</p>
+	<Terminal
+		lines={[
+			{
+				command: 'wick invoke common/redact:0.0.1 --op-with=@config.json regex -- --input="[DATA]"',
+				output: ''
+			}
+		]}
+	/>
+	<p class="mt-2">For example:</p>
+	<Terminal lines={cli} />
+</Section>
