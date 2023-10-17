@@ -77,8 +77,8 @@
 				pill
 				class="mt-2"
 				on:click={startDownload}
-				type="submit"
-				disabled={(bundles[selectedBundle] || {}).ready}>Download Files</Button
+				color="alternative"
+				disabled={(bundles[selectedBundle] || {}).ready}>Download Bundle</Button
 			>
 			<slot />
 		{/if}
