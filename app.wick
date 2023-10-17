@@ -1,7 +1,32 @@
 kind: wick/app@v1
 name: app.wick
 metadata:
-  version: 0.0.1
-  description: New wick application
+  version: 0.1.0
+  description: showcasing wick server and client side capabilities.
   licenses:
   - Apache-2.0
+package:
+  registry:
+    host: registry.candle.dev
+    namespace: candle-apps
+  files:
+    - ./ui/build
+resources:
+  - name: httpserver
+    resource:
+      kind: wick/resource/tcpport@v1
+      port: "{{ ctx.env.HTTP_PORT }}"
+      address: 0.0.0.0
+  - name: DIR
+    resource:
+      kind: wick/resource/volume@v1
+      path: '{{__dirname}}/ui/build'
+triggers:
+  - kind: wick/trigger/http@v1
+    resource: httpserver
+    routers:
+      - kind: wick/router/static@v1
+        path: /
+        volume: DIR
+        fallback: index.html
+
