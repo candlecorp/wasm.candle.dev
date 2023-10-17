@@ -26,6 +26,6 @@ jobs:
         id: push
         with:
           path: "app.wick"
-          username: ${{ secrets.CANDLE_REGISTRY_USERNAME }}
-          password: ${{ secrets.CANDLE_REGISTRY_PASSWORD }}
+          username: ${{ secrets.CANDLE_REG_CANDLECORP_USERNAME }}
+          password: ${{ secrets.CANDLE_REG_CANDLECORP_PASSWORD }}
           tags: latest
