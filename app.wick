@@ -1,10 +1,10 @@
 kind: wick/app@v1
 name: build-once-run-anywhere
 metadata:
-  version: 0.1.0
+  version: 0.1.1
   description: showcasing wick server and client side capabilities.
   licenses:
-  - Apache-2.0
+    - Apache-2.0
 package:
   registry:
     host: registry.candle.dev
@@ -15,7 +15,7 @@ resources:
   - name: httpserver
     resource:
       kind: wick/resource/tcpport@v1
-      port: "{{ ctx.env.HTTP_PORT }}"
+      port: '{{ ctx.env.HTTP_PORT }}'
       address: 0.0.0.0
   - name: DIR
     resource:
@@ -29,4 +29,3 @@ triggers:
         path: /
         volume: DIR
         fallback: index.html
-

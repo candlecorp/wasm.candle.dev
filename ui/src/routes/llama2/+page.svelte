@@ -82,7 +82,7 @@
 	onDestroy(cleanup);
 </script>
 
-<h1 class={header}>Object Detection in Images</h1>
+<h1 class={header}>Text Generation with Llama</h1>
 <Section>
 	<p class={description}>
 		This demo uses the <strong>candle_ml/llama</strong> WebAssembly component to generate text using
