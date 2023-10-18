@@ -68,7 +68,7 @@
 <h1 class={header}>Text Redaction component</h1>
 <Section>
 	<p class={description}>
-		This demo uses the <strong>common/redact</strong> Wick component to redact text matching an expression.
+		This demo uses the <a href="https://github.com/candlecorp/wick-components/tree/main/components/redact">common/redact</a> Wick component to redact text matching an expression.
 	</p>
 	<p class={description}>
 		It uses the

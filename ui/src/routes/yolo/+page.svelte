@@ -81,7 +81,7 @@
 <h1 class={header}>Object Detection in Images</h1>
 <Section>
 	<p class={description}>
-		This demo uses the <strong>candle_ml/yolo</strong> WebAssembly component to detect objects in images.
+		This demo uses the <a href="https://github.com/candlecorp/wick-components/tree/main/components/yolo">candle_ml/yolo</a> WebAssembly component to detect objects in images.
 	</p>
 	<p class={description}>
 		It uses YOLOv8 models and is built using the

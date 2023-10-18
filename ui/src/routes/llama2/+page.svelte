@@ -85,7 +85,7 @@
 <h1 class={header}>Text Generation with Llama</h1>
 <Section>
 	<p class={description}>
-		This demo uses the <strong>candle_ml/llama</strong> WebAssembly component to generate text using
+		This demo uses the <a href="https://github.com/candlecorp/wick-components/tree/main/components/llama">candle_ml/llama2</a> WebAssembly component to generate text using
 		Llama 2 LLM models.
 	</p>
 	<p class={description}>
