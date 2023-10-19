@@ -1,7 +1,7 @@
 kind: wick/app@v1
 name: build-once-run-anywhere
 metadata:
-  version: 0.1.3
+  version: 0.1.4
   description: showcasing wick server and client side capabilities.
   licenses:
     - Apache-2.0
